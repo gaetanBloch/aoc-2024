@@ -17,11 +17,15 @@ def solve_challenge():
     if not reports:
         return
     
-    # Count safe reports
+    # Part 1: Count safe reports without dampener
     safe_count = count_safe_reports(reports)
     
+    # Part 2: Count safe reports with Problem Dampener
+    safe_count_with_dampener = count_safe_reports(reports, use_dampener=True)
+    
     print(f"\nResults:")
-    print(f"Number of safe reports: {safe_count}")
+    print(f"Part 1 - Number of safe reports: {safe_count}")
+    print(f"Part 2 - Number of safe reports with Problem Dampener: {safe_count_with_dampener}")
 
 if __name__ == "__main__":
     solve_challenge()

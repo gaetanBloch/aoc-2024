@@ -50,14 +50,40 @@ def is_report_safe(levels):
     """
     return is_monotonic(levels) and has_valid_differences(levels)
 
-def count_safe_reports(reports):
+def is_report_safe_with_dampener(levels):
+    """
+    Check if a report is safe, considering the Problem Dampener.
+    The Problem Dampener can remove one level to make an unsafe report safe.
+    
+    Args:
+        levels (list): List of level readings
+        
+    Returns:
+        bool: True if the report is safe with or without using the Problem Dampener
+    """
+    # First check if it's safe without the dampener
+    if is_report_safe(levels):
+        return True
+        
+    # Try removing each level one at a time
+    for i in range(len(levels)):
+        dampened_levels = levels[:i] + levels[i+1:]
+        if is_report_safe(dampened_levels):
+            return True
+            
+    return False
+
+def count_safe_reports(reports, use_dampener=False):
     """
     Count the number of safe reports.
     
     Args:
         reports (list): List of reports to check
+        use_dampener (bool): Whether to use the Problem Dampener
         
     Returns:
         int: Number of safe reports
     """
+    if use_dampener:
+        return sum(1 for report in reports if is_report_safe_with_dampener(report))
     return sum(1 for report in reports if is_report_safe(report))
